@@ -1,0 +1,43 @@
+{    
+    "variables": {
+       "os_username": "{{env `OS_USERNAME`}}",
+       "os_password": "{{env `OS_PASSWORD`}}",
+       "os_auth_url": "{{env `OS_AUTH_URL`}}",
+       "os_region_name": "{{env `OS_REGION_NAME`}}",
+       "os_tenant_name": "{{env `OS_TENANT_NAME`}}",
+       "ssh_username": "{{env `SSH_USERNAME`}}",
+       "region": "{{env `OS_REGION_NAME`}}",
+       "os_domaine_name": "{{env `OS_USER_DOMAIN_NAME`}}",
+       "source_id": "{{env `SOURCE_ID`}}",
+       "os_flavor_id": "{{env `FLAVOR_ID`}}",
+       "os_network_id": "{{env `NETWORK_ID`}}",
+       "os_floating_id": "{{env `FLOATING_ID`}}"
+       },
+   
+       "builders": [
+           {
+               "type": "openstack",
+               "identity_endpoint": "{{user `os_auth_url`}}",
+               "tenant_name": "{{user `os_tenant_name`}}",
+               "domain_name": "{{user `os_domaine_name`}}", 
+               "username": "{{user `os_username`}}",
+               "password": "{{user `os_password`}}",
+               "ssh_username": "{{user `ssh_username`}}",
+               "region":  "{{user `os_region_name`}}",
+               "image_name": "packer-image",
+               "instance_name": "packer-instance",
+               "source_image": "{{user `source_id`}}",
+               "availability_zone": "eu-west-0a",
+               "use_blockstorage_volume": false,
+               "flavor": "{{user `os_flavor_id`}}",
+               "networks": ["{{user `os_network_id`}}"],
+               "floating_ip": "{{user `os_floating_id`}}"
+           }
+       ],
+       "provisioners": [
+           {
+               "script": "setup-vm.sh",
+               "type": "shell"
+           }
+       ]
+   }
